@@ -1,5 +1,5 @@
-import plotly.express as px
 import pandas as pd
+import Statistic
 
 
 # returns np_array of column/row data by idx
@@ -55,19 +55,8 @@ def main():
     input_data = get_input_parameters_data(input_file_name)
     output_data = get_output_parameters_data(input_file_name)
 
-    # print data for debugging
-    print(input_data["rgmp[Sm3/Sm3]"])
-    print(input_data["N32[cps]"])
-    print(input_data["SampleTime[s]"])
-    print(input_data["DPV[mbar]"])
-    print(input_data["PL[bara]"])
-    print()
-    print(output_data["GasPointLE[1/m]"])
-    print(output_data["GasPointHE[1/m]"])
-    print(output_data["WaterPointLE[1/m]"])
-    print(output_data["WaterPointHE[1/m]"])
-    print(output_data["OilPointLE[1/m]"])
-    print(output_data["OilPointHE[1/m]"])
+    gas_le_statistic = Statistic.DataStatistic(output_data["GasPointLE[1/m]"], "GasPointLE[1/m]")
+    gas_le_statistic.print_statistic()
 
 
 if __name__ == "__main__":
