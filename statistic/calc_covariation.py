@@ -1,29 +1,32 @@
 import numpy as np
-from plot_statistic import input_attributes_keys
-from plot_statistic import output_attributes_keys
+# import global keys
+from data.global_keys import *
 
 # covariation matrices names
 cov_matrices_names = ["all_with_all", "all_with_in", "all_with_out"]
 
 
-# get covaration matrices (data - dict of pairs: key - attribute name, value - attribute data)
-def get_attributes_typical_cart(input_data_dict: dict, name_idx_dict: dict) -> dict:
+# get covaration matrices (input_data_dict - dict of pairs: key - attribute name, value - attribute data)
+def get_attributes_typical_cart(input_data_dict: dict, other_attributes_keys) -> dict:
     # order data: 1. input attr data 2. output attr data 3. other attr data
     data_dict = dict()
     # for input attr
-    for key in input_attributes_keys:
-        data_dict[key] = input_data_dict[key]
+    for in_key in input_attributes_keys:
+        data_dict[in_key] = input_data_dict[in_key]
     # for output attr
-    for key in output_attributes_keys:
+    for out_key in output_attributes_keys:
+        data_dict[out_key] = input_data_dict[out_key]
+    # for other attributes
+    for key in other_attributes_keys:
         data_dict[key] = input_data_dict[key]
-    # TODO: get other attributes data
     # get key-list in insertion order
     keys = list(data_dict)
 
     # construct data: 2d array
-    data = np.array([[]])
-    for key in keys:
-        data = np.concatenate((data, data_dict[key]), axis=0)
+    data = [data_dict[keys[0]]]
+    for i in range(len(keys) - 1):
+        # concatenate data arrays by x axis
+        data = np.concatenate((data, [data_dict[keys[i + 1]]]), axis=0)
 
     # calc covariation matrix (all with all)
     cov_matrix_all = np.corrcoef(data)

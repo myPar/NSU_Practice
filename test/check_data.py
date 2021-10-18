@@ -23,7 +23,7 @@ def check_data(input_file_name: str):
 
 
 def main():
-    check_data("data.txt")
+    check_data("../data/data.txt")
 
 
 if __name__ == "__main__":
