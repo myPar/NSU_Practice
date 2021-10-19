@@ -5,6 +5,7 @@ import pandas as pd
 class DataStatistic(object):
     # statistic init method: gets np_array data and returns Statistic object for it
     def __init__(self, data, name: str):
+        # remove Nan items
         cleared_data = data[~np.isnan(data)]
         self.value_count = np.size(data)    # value count
         self.average = np.mean(cleared_data)        # average value
