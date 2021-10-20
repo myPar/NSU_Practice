@@ -46,7 +46,7 @@ def get_attributes_typical_cart(input_data_dict, other_attributes_keys) -> dict:
 
     # get from "all" cov-matrix "all with out" cov matrix:
     delete_indices_row = np.arange(count_in, count_in + count_out)
-    delete_indices_column = np.concatenate((np.arange(count_in), np.arange(count_out, count_all)), 0)
+    delete_indices_column = np.concatenate((np.arange(count_in), np.arange(count_in + count_out, count_all)), 0)
     # delete output attr rows
     cov_matrix_all_out = np.delete(cov_matrix_all, delete_indices_row, 0)
     # delete not output columns
