@@ -6,9 +6,9 @@ from data.global_keys import *
 cov_matrices_names = ["all_with_all", "all_with_in", "all_with_out"]
 
 
-# get covaration matrices (input_data_dict - dict of pairs: key - attribute name, value - attribute data)
-def get_attributes_typical_cart(input_data_dict, other_attributes_keys) -> dict:
-    # order data: 1. input attr data 2. output attr data 3. other attr data
+# from input data dict create new data dict with format:
+# order data: 1. input attr data 2. output attr data 3. other attr data
+def get_formatted_data_dict(input_data_dict, other_attributes_keys):
     data_dict = dict()
     # for input attr
     for in_key in input_attributes_keys:
@@ -19,7 +19,12 @@ def get_attributes_typical_cart(input_data_dict, other_attributes_keys) -> dict:
     # for other attributes
     for key in other_attributes_keys:
         data_dict[key] = input_data_dict[key]
-    # get key-list in insertion order
+
+    return data_dict
+
+
+# get two dimensional array of attributes data: each row - data of the attribute
+def get_2d_data(data_dict: dict):
     keys = list(data_dict)
 
     # construct data: 2d array
@@ -27,6 +32,17 @@ def get_attributes_typical_cart(input_data_dict, other_attributes_keys) -> dict:
     for i in range(len(keys) - 1):
         # concatenate data arrays by x axis
         data = np.concatenate((data, [data_dict[keys[i + 1]]]), axis=0)
+
+    return data
+
+
+# get covaration matrices (input_data_dict - dict of pairs: key - attribute name, value - attribute data)
+def get_attributes_typical_cart(input_data_dict, other_attributes_keys) -> dict:
+    # get data dict with specified order of attributes data
+    data_dict = get_formatted_data_dict(input_data_dict, other_attributes_keys)
+
+    # construct data: 2d array
+    data = get_2d_data(data_dict)
 
     # calc covariation matrix (all with all)
     cov_matrix_all = np.corrcoef(data)

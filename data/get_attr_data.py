@@ -6,11 +6,10 @@ from data.global_keys import*
 
 
 def get_other_attr_keys(file_name: str):
-    df = pd.read_csv(filepath_or_buffer=file_name, sep=' ', header=0)
-    # getting file header (column names)
-    header = df.columns.to_numpy()
-    # make set from header keys to get O(1) asymptotic of searching keys
-    key_set = set(header)
+    input_file = open(file_name, 'r')
+    # getting file header (column names) as a set
+    key_set = set(input_file.readline().replace("\n", "").split(" "))
+    input_file.close()
 
     # remove input attributes keys
     for in_key in input_attributes_keys:
