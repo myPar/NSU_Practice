@@ -3,7 +3,7 @@ import numpy as np
 from data.global_keys import *
 
 # covariation matrices names
-cov_matrices_names = ["all_with_all", "all_with_in", "all_with_out"]
+cov_matrices_names = ["all_attributes", "all_with_in", "out_attributes"]
 
 
 # from input data dict create new data dict with format:

@@ -33,7 +33,7 @@ def get_other_attr_keys(file_name: str):
             print("Fatal: no such string data key in data header: " + str_data_key, file=sys.stderr)
             exit(1)
 
-    return np.array(list(key_set))
+    return np.array(list(sorted(key_set)))
 
 
 # returns np_array of column/row data by idx
