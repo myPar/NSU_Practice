@@ -17,3 +17,14 @@ def supplement_data(data, expected_count: int):
         assert False
     # return result data
     return data
+
+
+def supplement_data_dict(data_dict: dict, expected_count: int):
+    attributes = data_dict.keys()
+
+    for attribute in attributes:
+        data = data_dict[attribute]
+        data = supplement_data(data, expected_count)
+        data_dict[attribute] = data
+    # return supplement data dict
+    return data_dict

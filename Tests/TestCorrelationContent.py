@@ -9,6 +9,8 @@ from enum import Enum
 from data.get_attr_data import get_attributes_data
 from statistic.calc_covariation import get_attributes_typical_cart
 from statistic.calc_covariation import cov_matrices_names
+from statistic.data_supplement import supplement_data_dict
+from Tests.tools import is_close
 
 unittest.TestLoader.sortTestMethodsUsing = None
 accuracy = 0.00000000000001  # because of double numbers arithmetic there can be calculation accuracy
@@ -23,14 +25,6 @@ class MatrixType(Enum):
     ALL = 0
     IN = 1
     OUT = 2
-
-
-# check equality double numbers with accuracy
-def is_close(val1, val2) -> bool:
-    if abs(val1 - val2) > accuracy:
-        return False
-    else:
-        return True
 
 
 # input - attributes list; output - dict of pairs: idx - attribute
@@ -60,7 +54,8 @@ class TestCorrelation(unittest.TestCase):
                                             axis=0)
         cls.output_other_attributes = np.concatenate((output_attributes_keys, cls.other_attributes_keys), axis=0)
         cls.input_other_attributes = np.concatenate((input_attributes_keys, cls.other_attributes_keys), axis=0)
-        cls.all_data_dict = get_attributes_data(data_set_file_name, cls.all_attributes)
+        cls.all_data_dict = supplement_data_dict(get_attributes_data(data_set_file_name, cls.all_attributes),
+                                                 expected_count=item_count)
         cls.typical_cart = get_attributes_typical_cart(cls.all_data_dict, cls.other_attributes_keys)
 
     @classmethod
@@ -117,7 +112,7 @@ class TestCorrelation(unittest.TestCase):
                     self.assertTrue(nan_flag1 and nan_flag2)
                 else:
                     # actual calculated coeff should be equal to expected coefficient in matrix
-                    self.assertTrue(is_close(actual_coefficient, expected_coefficient))
+                    self.assertTrue(is_close(actual_coefficient, expected_coefficient, accuracy))
 
     def test_all_with_all(self):
         # get all with all correlation matrix

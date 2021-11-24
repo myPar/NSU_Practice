@@ -1,10 +1,11 @@
 import unittest
 
 from data.get_attr_data import *
-from statistic.data_supplement import supplement_data
+from statistic.data_supplement import supplement_data_dict
+from data.global_data import *
 
-expected_item_count = 1269
-input_file_name = "../data/data.txt"
+input_file_name = data_set_file_name
+expected_item_count = item_count
 
 
 def get_test_data() -> dict:
@@ -17,9 +18,8 @@ def get_test_data() -> dict:
     all_data_dict = get_attributes_data(input_file_name, all_attr_names)
 
     # remove Nan items and replace it by specified value
-    for attribute in all_attr_names:
-        data = all_data_dict[attribute]
-        all_data_dict[attribute] = supplement_data(data, expected_item_count)
+    all_data_dict = supplement_data_dict(all_data_dict, expected_item_count)
+
     return all_data_dict
 
 
@@ -45,7 +45,9 @@ def get_attribute_data(attribute_name: str):
 
     if not (attribute_name in header):
         assert False, "Fatal: no such attribute - " + attribute_name + " in data header"
-    result = supplement_data(df[attribute_name].to_numpy(), expected_item_count)
+
+    result = supplement_data_dict(dict({attribute_name: df[attribute_name].to_numpy()}), expected_item_count)[attribute_name]
+
     # return supplemented data
     return result
 
